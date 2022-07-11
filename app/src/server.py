@@ -1,9 +1,10 @@
 import smtplib
+from flask import jsonify,request
 from src import app
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
-
+from src.config.db import connection
 
 
 # import necessary packages
@@ -19,9 +20,9 @@ msg = MIMEMultipart()
 message = "Thank you holaaa"
  
 # setup the parameters of the message
-password = "3124075194JM26"
-msg['From'] = "edison.jm26@gmail.com"
-msg['To'] = "josment123jf@gmail.com"
+
+msg['From'] = ""
+msg['To'] = ""
 msg['Subject'] = "Subscription"
  
 # add in the message body
@@ -38,12 +39,25 @@ server.login('exilesoft.servico@gmail.com', 'oixzbucncdukgjio')
  
  
 # send the message via the server.
-server.sendmail(msg['From'], msg['To'], msg.as_string())
+#server.sendmail(msg['From'], msg['To'], msg.as_string())
  
 server.quit()
  
-print("successfully sent email to %s:" % (msg['To']))
+#print("successfully sent email to %s:" % (msg['To']))
 
+
+
+@app.route('/api/v1/correo', methods=['POST'])
+def crearCorreo():
+    #request_data = request.get_json()
+    correo = request.json['correo']
+    print(correo)
+    cursor = connection.cursor()
+    print(correo)
+    cursor.execute('INSERT INTO Correo(Correo) values (%s,)',(correo))
+    connection.commit()
+    response = {'message': 'success'}
+    return jsonify(response)
 
 
 @app.route('/')
