@@ -20,3 +20,4 @@ JWT_REFRESH_LIFESPAN = {'days': 30}
 #subir archivos al servidor
 UPLOAD_FOLDER='static/uploads/'
 MAX_CONTENT_LENGTH = 16 * 1024 * 1024
+
